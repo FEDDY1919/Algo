@@ -3,7 +3,7 @@ from constants import *
 
 class Maze:
     def __init__(self):
-        self.grid = [['|' for _ in range(GRID_COLUMNS)] for _ in range(GRID_ROWS)]
+        self.grid = [['.' for _ in range(GRID_COLUMNS)] for _ in range(GRID_ROWS)]
         
     def setObstacles(self,obstacles):
         for ob in obstacles: # Set Obstacles
@@ -39,4 +39,10 @@ class Maze:
                 self.grid[ob[0]][ob[1]+3] = 'E'
                 # waypoints.append([ob[0],ob[1]+3,'W'])
 
-    
+    def validateRobotPos(self,robot_centre):
+        r_c,c_c = robot_centre
+        for r in range(r_c-1,r_c+2):
+            for c in range(c_c-1,c_c+2):
+                if(not self.posIsValid(r,c)):
+                    return False
+        return True

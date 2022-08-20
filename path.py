@@ -2,11 +2,12 @@ import numpy as np
 import itertools
 import math
 from grid import *
+from constants import *
 
 obstacles = [[5,6],[12,9],[19,6],[19,17],[3,15]] #Test Obstacles
 
 
-current_pos = [18,2,'N'] #Starting/Current Position AND Direction it is facing
+current_pos = [18,2] #Starting/Current Position AND Direction it is facing
 
 
 maze = Maze()
@@ -34,6 +35,7 @@ for ob in simple:
 
 #maze.setWayPoints(obstacles)
 maze.draw()
+print(maze.validateRobotPos(current_pos))
 
 
 
