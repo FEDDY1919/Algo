@@ -34,7 +34,6 @@ print("Found a simple hamiltonian path:")
 for ob in simple:
     print(f"\t{ob}")
 
-print(simple[0])
 #maze.setWayPoints(obstacles)
 maze.draw()
 for ob in simple:
