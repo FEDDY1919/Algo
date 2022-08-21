@@ -38,7 +38,7 @@ print(simple[0])
 #maze.setWayPoints(obstacles)
 maze.draw()
 for ob in simple:
-   path = astar(maze.grid,current_pos,ob)
+   path = astar(maze,current_pos,ob)
    current_pos = ob
    for item in path:
         maze.grid[item[0]][item[1]] = 'O'
@@ -46,6 +46,14 @@ for ob in simple:
 
 
 
+'''
+Things to Consider:
+1. Size of the robot, the path created would work if the robot is 10cm x 10cm
+2. Points at which the robot should stop, it should not be directly on the obstacle, but near it
+3. Include in the heuristic turn penalties and such, making a left or right turn would cause more movement than travelling a straight line
+4. Include current orientation within the current_node to help in point 3
+5. ....
+'''
 
 
 
