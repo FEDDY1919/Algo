@@ -11,7 +11,7 @@ class Maze:
     
     def posIsObstacle(self,r,c):
         try:
-            return self.grid[r][c]!='/'
+            return self.grid[r][c]!='.'
         except IndexError:
             return False
         
@@ -43,6 +43,6 @@ class Maze:
         r_c,c_c = robot_centre
         for r in range(r_c-1,r_c+2):
             for c in range(c_c-1,c_c+2):
-                if(not self.posIsValid(r,c)):
+                if(not self.posIsValid(r,c) or not self.posIsObstacle(r,c)):
                     return False
         return True
