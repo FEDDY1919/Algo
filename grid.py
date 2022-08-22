@@ -24,20 +24,22 @@ class Maze:
     def draw(self):
         print(np.matrix(self.grid))
     
-    def setWayPoints(self,obstacles):
-        for ob in obstacles:
-            if(ob[0]+3 <GRID_ROWS): # Create all waypoints if possible
-                self.grid[ob[0]+3][ob[1]] = 'S'
-                # waypoints.append([ob[0]+3,ob[1],'N']) # Waypoint Co-ordinate + Orientation of Car
-            if(ob[1]-3 >= 0):
-                self.grid[ob[0]][ob[1]-3] = 'W'
-                # waypoints.append([ob[0],ob[1]-3,'E']) 
-            if(ob[0]-3 >= 0):
-                self.grid[ob[0]-3][ob[1]] = 'N'
-                # waypoints.append([ob[0]-3,ob[1],'S'])
-            if(ob[1]+3 <GRID_COLUMNS):
-                self.grid[ob[0]][ob[1]+3] = 'E'
-                # waypoints.append([ob[0],ob[1]+3,'W'])
+    def getWayPoints(self,ob):
+        waypoints = []
+        if(ob[0]+3 <GRID_ROWS): # Create all waypoints if possible
+             #self.grid[ob[0]+3][ob[1]] = 'S'
+            waypoints.append([ob[0]+3,ob[1]]) # Waypoint Co-ordinate + Orientation of Car
+        if(ob[1]-3 >= 0):
+            #self.grid[ob[0]][ob[1]-3] = 'W'
+            waypoints.append([ob[0],ob[1]-3]) 
+        if(ob[0]-3 >= 0):
+            #self.grid[ob[0]-3][ob[1]] = 'N'
+            waypoints.append([ob[0]-3,ob[1]])
+        if(ob[1]+3 <GRID_COLUMNS):
+            #self.grid[ob[0]][ob[1]+3] = 'E'
+            waypoints.append([ob[0],ob[1]+3])
+        return waypoints
+
 
     def validateRobotPos(self,robot_centre):
         r_c,c_c = robot_centre
