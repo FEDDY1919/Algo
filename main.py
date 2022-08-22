@@ -91,6 +91,8 @@ if __name__ == "__main__":
 
 '''
 these are just my thoughts, idk if i can even code them lmao
+fyi grid columns are 18 for now to make printing nicer
+
 Things to Consider:
 1. Size of the robot, the path created would only work if the robot is 10cm x 10cm and can travel omni-directionally
 2. Points at which the robot should stop, it should not be directly on the obstacle, but near it (done)
@@ -116,9 +118,9 @@ Consider the following situation:
      
 O            T2(E)
 
-O represents the robot, T(n) represents the the point of interest for the robot and the direction the robot needs to face
+O represents the robot, T(direction) represents the the point of interest for the robot and the direction the robot needs to face
 If the robot is currently facing East, it should aim for T2 instead of T1 first.
-Not necessarily is the closest waypoint the most convenient for the current robot.
+Not necessarily is the closest waypoint the most convenient for the robot.
 
 The way the current Pathfinding algorithm we have works:
 1.Iterate through the position of all obstacles.
@@ -133,7 +135,7 @@ For East, obstacle higher [c] value with E waypoint
 For West, obstacle lower [c] with W waypoint
 For South, obstacle higher [r] value with S waypoint
 
-Taking this into consideration, the robot would be less likely to perform a U turn maneuver, we have to find out the distance the robot travels
+Taking this into consideration, the robot would be less likely to turning, we have to find out the distance the robot travels
 when it does a U turn, left turn and right turn and include it into the calculation if possible.
 ===================================================================================
 Point 5. The camera can recognise 2 images simultaneously
