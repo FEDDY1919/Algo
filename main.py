@@ -45,6 +45,7 @@ maze.draw()
 
 #loop through obstacles in the simplest hamiltonian path
 for ob in simple:
+
     #get the target position we would want to be in for the obstacles, N S E W
     waypoints = maze.getWayPoints(ob)
     #find the closest waypoint for the obstacle
@@ -61,9 +62,18 @@ for ob in simple:
     while len(waypoints)>0:
         wp = waypoints.popleft()
         path = astar(maze,current_pos,wp)
-        current_pos = wp
         for item in path:
-            maze.grid[item[0]][item[1]] = 'O'
+            if item[0]!=current_pos[0]:
+                if item[0]-current_pos[0] > 0: #This indicates straight line movement along the x axis
+                    maze.grid[current_pos[0]][current_pos[1]] = 'S'
+                else:
+                    maze.grid[current_pos[0]][current_pos[1]] = 'N'
+            else:
+                if item[1]-current_pos[1] > 0:# This indicates movement along the y-axis
+                    maze.grid[current_pos[0]][current_pos[1]] = 'E'
+                else:
+                    maze.grid[current_pos[0]][current_pos[1]] = 'W'
+            current_pos = item
     maze.draw()
 
 
@@ -94,6 +104,15 @@ Things to Consider:
 [r-1][c-1] a NORTHWEST movement
 [r+1][c-1] a SOUTHWEST movement
 [r-1][c+1] a NORTHEAST movement
+
+PseudoCode for if image is found:
+    while scanning:
+        if img_id == bullseye_id:
+            path = astar(maze,current_pos,wp)
+            travel through path
+        else:
+            save id
+            break and continue to next obstacle
 
 '''
 
