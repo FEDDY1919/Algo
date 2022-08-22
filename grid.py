@@ -11,7 +11,7 @@ class Maze:
     
     def posIsObstacle(self,r,c):
         try:
-            return self.grid[r][c]!='.'
+            return self.grid[r][c] == 'X'
         except IndexError:
             return False
         
