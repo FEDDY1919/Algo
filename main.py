@@ -90,6 +90,7 @@ if __name__ == "__main__":
 
 
 '''
+these are just my thoughts, idk if i can even code them lmao
 Things to Consider:
 1. Size of the robot, the path created would only work if the robot is 10cm x 10cm and can travel omni-directionally
 2. Points at which the robot should stop, it should not be directly on the obstacle, but near it (done)
