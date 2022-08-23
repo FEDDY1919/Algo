@@ -123,7 +123,7 @@ If the robot is currently facing East, it should aim for T2 instead of T1 first.
 Not necessarily is the closest waypoint the most convenient for the robot.
 
 The way the current Pathfinding algorithm we have works:
-1.Iterate through the position of all obstacles.
+1.Iterate through the position of all obstacles within the shortest hamiltonian path.
 2.Create the target positions for the obstacles.
 3.Out of all of the target positions, travel to the cloest one.
 4.Sequentially travel to the remaining positions in a clockwise manner.
