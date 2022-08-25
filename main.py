@@ -63,6 +63,7 @@ if __name__ == "__main__":
             waypoints.rotate(-index)
 
         #A star pathfinding to all the waypoints available
+        #Mapping out the movemen
         while len(waypoints)>0:
             wp = waypoints.popleft()
             path = astar(maze,current_pos,wp)
