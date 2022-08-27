@@ -1,12 +1,15 @@
+from distutils.cmd import Command
 import heapq
 import math
+import itertools
+from position import Position
+from forward import Forward
 
 class Node:
 
-    def __init__(self, parent = None, position = None):
+    def __init__(self, parent = None, position = None,direction = None):
         self.parent = parent
-        self.position = position
-
+        self.position = Position(position,direction)
         self.g = 0
         self.h = 0
         self.f = 0
@@ -19,7 +22,19 @@ class Node:
       return self.f > other.f
     
     def __eq__(self, other):
-        return self.position == other.position
+        return self.position.get_pos() == other.position.get_pos()
+
+    def __str__(self):
+        return f"{self.position},{self.direction}"
+
+def check_valid_command(command:Command,pos:Position):
+    p = pos.copy()
+
+    command.apply_on_pos(p)
+    if p.validate_position():
+        return True
+        
+    return False
 
 def astar(maze,start,end):
 
@@ -27,21 +42,19 @@ def astar(maze,start,end):
     start_node.g = start_node.h = start_node.f = 0
     end_node = Node(None, end)
     end_node.g = end_node.h = end_node.f = 0
-
     open_list = []
     closed_list = []
-
     # Heapify the open_list and Add the start node
     heapq.heapify(open_list) 
     heapq.heappush(open_list, start_node)
     #What squares to use
     adjacent_squares = ((0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1),)
 
+    
     while len(open_list) > 0:
         #get current node
         current_node = heapq.heappop(open_list)
         closed_list.append(current_node)
-
         #reached the end, return the path
         if current_node == end_node:
             path = []
@@ -54,10 +67,19 @@ def astar(maze,start,end):
         #Generate child nodes for the current node
         children = []
 
+        neighbors = []
+        commands = [Forward(10),Forward(-10)]
+
+
+        turn_commands = ['FL','FR','BL','BR']
         for new_position in adjacent_squares: # Adjacent squares
 
             # Get node position, used
-            node_position = [current_node.position[0] + new_position[0], current_node.position[1] + new_position[1]]
+            '''
+                for c in commands:
+
+            '''
+            node_position = [current_node.position.get_r() + new_position[0], current_node.position.get_c() + new_position[1]]
 
             # Make sure within range
             if node_position[0] > (len(maze.grid) - 1) or node_position[0] < 0 or node_position[1] > (len(maze.grid[len(maze.grid)-1]) -1) or node_position[1] < 0:
@@ -65,7 +87,10 @@ def astar(maze,start,end):
             # Make sure walkable terrain
             if maze.grid[node_position[0]][node_position[1]] == 'X':
                 continue
-        
+                
+            if not maze.validateRobotPos(node_position):
+                continue
+
             # Create new node
             new_node = Node(current_node, node_position)
 
@@ -78,9 +103,10 @@ def astar(maze,start,end):
             if child in closed_list:
                 continue
 
+
             # Create the f, g, and h values
             child.g = current_node.g + 1
-            child.h = math.sqrt(((child.position[0] - end_node.position[0]) ** 2) + ((child.position[1] - end_node.position[1]) ** 2))
+            child.h = math.sqrt(((current_node.position.get_r() - end_node.position.get_r()) ** 2) + ((current_node.position.get_c() - end_node.position.get_c()) ** 2))
             child.f = child.g + child.h
 
             # Child is already in the open list
@@ -89,7 +115,6 @@ def astar(maze,start,end):
 
             # Add the child to the open list
             heapq.heappush(open_list, child)
-
 
 
     
