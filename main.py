@@ -1,92 +1,54 @@
 import numpy as np
-import itertools
-import math
-from grid import *
+from maze import Maze
 from constants import *
 from shortest_path import *
-from collections import deque
 
 def calc_distance(path):
     # Create all target points, including the start.
-    targets = [[18,2]]
+    targets = [[18,1]]
     for obstacle in path:
-         targets.append(obstacle)
+        targets.append(obstacle)
 
     dist = 0
     for i in range(len(targets) - 1):
         dist += math.sqrt(((targets[i][0] - targets[i + 1][0]) ** 2) + ((targets[i][1] - targets[i + 1][1]) ** 2))
     return dist
 
-def closest_waypoint(waypoints,start):
-    dist = 0
-    dist += math.sqrt((waypoints[0]-start[0])**2 + (waypoints[1]-start[1])**2)
-    return dist
-
 if __name__ == "__main__":
 
-    obstacles = [[5,6],[12,9],[19,6],[19,17],[3,15]] #Test Obstacles
-
-
-    current_pos = [18,2] #Starting/Current Position
-
+    obstacles = [[5,6,Direction.TOP],[13,9,Direction.BOTTOM],[15,6,Direction.RIGHT],[13,14,Direction.TOP],[3,15,Direction.LEFT]] #Test Obstacles
 
     maze = Maze()
     maze.setObstacles(obstacles)
-
-    #All Possible Permutations for hamilton path
     perms = list(itertools.permutations(obstacles))
+    simple = min(perms, key=calc_distance)
 
-
-    #Finds the Simplest hamilton path
-    simple = min(perms,key = calc_distance)
-    print("Found a simple hamiltonian path:")
+    goal = []
     for ob in simple:
-        print(f"\t{ob}")
+        goal.append(maze.setWayPoints(ob))
 
-
-    #maze.setWayPoints(obstacles)
-    maze.draw()
-
-    #loop through obstacles in the simplest hamiltonian path
-    for ob in simple:
-
-        #get the target position we would want to be in for the obstacles, N S E W
-        waypoints = maze.getWayPoints(ob)
-        #find the closest waypoint for the obstacle
-        target = min(waypoints,key = lambda waypoints : closest_waypoint(waypoints,current_pos))
-
-        index = waypoints.index(target)
-        #change the array to queue
-        #if it is not the first item within the array, we shift it such that it is
-        waypoints = deque(waypoints)
-        if index != 0:
-            waypoints.rotate(-index)
-
-        #A star pathfinding to all the waypoints available
-        #Mapping out the movemen
-        while len(waypoints)>0:
-            wp = waypoints.popleft()
-            path = astar(maze,current_pos,wp)
-            for item in path:
-                if item[0]!=current_pos[0]:
-                    if item[0]-current_pos[0] > 0: #This indicates straight line movement along the x axis
-                        maze.grid[current_pos[0]][current_pos[1]] = 'S'
-                    else:
-                        maze.grid[current_pos[0]][current_pos[1]] = 'N'
-                else:
-                    if item[1]-current_pos[1] > 0:# This indicates movement along the y-axis
-                        maze.grid[current_pos[0]][current_pos[1]] = 'E'
-                    else:
-                        maze.grid[current_pos[0]][current_pos[1]] = 'W'
-                current_pos = item
+   
+    for g in goal:
+        path = astar(maze,maze.robot.get_pos_dir(),[g[0],g[1]])
+        for item in path:
+            r,c = maze.robot.get_current_pos()
+            maze.grid[r][c] = 'O'
+            maze.robot.update_current_pos(item.get_r(),item.get_c())
         maze.draw()
 
+        
 
-#    path = astar(maze,current_pos,ob)
-#    current_pos = ob
-#    for item in path:
-#         maze.grid[item[0]][item[1]] = 'O'
-#    maze.draw()
+
+'''
+Include Turn commands
+Include a Robot class
+Modify the A-star to take into accounts actions from all turns (Forward CW Rotate, Forward CCW rotate, Backward CW Rotate, Backward CCW rotate, Forward, Backward)
+Validate these turns before proceeding, turn penalty added into g value
+Include Direction into obstacle and waypoints
+
+
+'''
+
 
 
 
