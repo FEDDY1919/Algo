@@ -1,10 +1,9 @@
-import numpy as np
 import itertools
 import math
 from grid import *
 from constants import *
 from shortest_path import *
-from collections import deque
+from robot import Robot
 
 def calc_distance(path):
     # Create all target points, including the start.
@@ -24,7 +23,7 @@ def closest_waypoint(waypoints,start):
 
 if __name__ == "__main__":
 
-    obstacles = [[5,6],[12,9],[19,6],[19,17],[3,15]] #Test Obstacles
+    obstacles = [[5,6,Direction.TOP],[12,9,Direction.TOP],[19,6,Direction.RIGHT],[19,17,Direction.LEFT],[3,15,Direction.LEFT]] #Test Obstacles
 
 
     current_pos = [18,2] #Starting/Current Position
@@ -32,7 +31,10 @@ if __name__ == "__main__":
 
     maze = Maze()
     maze.setObstacles(obstacles)
-
+    maze.draw()
+    
+    
+    robot = Robot(maze)
     #All Possible Permutations for hamilton path
     perms = list(itertools.permutations(obstacles))
 
@@ -43,42 +45,17 @@ if __name__ == "__main__":
     for ob in simple:
         print(f"\t{ob}")
 
-
-    #maze.setWayPoints(obstacles)
-    maze.draw()
+    targets = maze.get_target_pos(simple)
+    for target in targets:
+        print(target.rc_dir())
+   
 
     #loop through obstacles in the simplest hamiltonian path
-    for ob in simple:
+    for target in targets:
 
-        #get the target position we would want to be in for the obstacles, N S E W
-        waypoints = maze.getWayPoints(ob)
-        #find the closest waypoint for the obstacle
-        target = min(waypoints,key = lambda waypoints : closest_waypoint(waypoints,current_pos))
-
-        index = waypoints.index(target)
-        #change the array to queue
-        #if it is not the first item within the array, we shift it such that it is
-        waypoints = deque(waypoints)
-        if index != 0:
-            waypoints.rotate(-index)
-
-        #A star pathfinding to all the waypoints available
-        #Mapping out the movemen
-        while len(waypoints)>0:
-            wp = waypoints.popleft()
-            path = astar(maze,current_pos,wp)
-            for item in path:
-                if item[0]!=current_pos[0]:
-                    if item[0]-current_pos[0] > 0: #This indicates straight line movement along the x axis
-                        maze.grid[current_pos[0]][current_pos[1]] = 'S'
-                    else:
-                        maze.grid[current_pos[0]][current_pos[1]] = 'N'
-                else:
-                    if item[1]-current_pos[1] > 0:# This indicates movement along the y-axis
-                        maze.grid[current_pos[0]][current_pos[1]] = 'E'
-                    else:
-                        maze.grid[current_pos[0]][current_pos[1]] = 'W'
-                current_pos = item
+        path = astar(maze,robot.pos.rc(),target.rc())
+        for item in path:
+            print(item)
         maze.draw()
 
 
@@ -87,7 +64,6 @@ if __name__ == "__main__":
 #    for item in path:
 #         maze.grid[item[0]][item[1]] = 'O'
 #    maze.draw()
-
 
 
 '''

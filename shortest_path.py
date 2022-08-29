@@ -21,12 +21,18 @@ class Node:
     def __eq__(self, other):
         return self.position == other.position
 
+    def __str__(self):
+        return f"{self.position}"
+    
+    __repr__ = __str__
+
 def astar(maze,start,end):
 
     start_node = Node(None, start)
     start_node.g = start_node.h = start_node.f = 0
     end_node = Node(None, end)
     end_node.g = end_node.h = end_node.f = 0
+
 
     open_list = []
     closed_list = []
@@ -42,6 +48,7 @@ def astar(maze,start,end):
         current_node = heapq.heappop(open_list)
         closed_list.append(current_node)
 
+        #print(current_node,end_node)
         #reached the end, return the path
         if current_node == end_node:
             path = []
@@ -57,7 +64,7 @@ def astar(maze,start,end):
         for new_position in adjacent_squares: # Adjacent squares
 
             # Get node position, used
-            node_position = [current_node.position[0] + new_position[0], current_node.position[1] + new_position[1]]
+            node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
 
             # Make sure within range
             if node_position[0] > (len(maze.grid) - 1) or node_position[0] < 0 or node_position[1] > (len(maze.grid[len(maze.grid)-1]) -1) or node_position[1] < 0:
