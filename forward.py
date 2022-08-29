@@ -4,6 +4,9 @@ class Forward:
     def __init__(self,dist):
         self.dist = dist
 
+    def __str__(self):
+        return f"Forward {self.dist}"
+
     def apply_on_pos(self,curr_pos):
 
         if curr_pos.direction == Direction.RIGHT:
