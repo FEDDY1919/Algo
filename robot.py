@@ -10,3 +10,10 @@ class Robot:
 
         self.path_hist = []
         self.__current_command = 0
+
+
+    def straight(self):
+        print("Travelling Straight...")
+
+    def turn(self):
+        print("Turning..")

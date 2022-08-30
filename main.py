@@ -56,7 +56,7 @@ if __name__ == "__main__":
         path = astar(maze,robot.pos.rc(),target.rc())
         for item in path:
             print(item)
-        maze.draw()
+        robot.pos.r,robot.pos.c = target.rc()
 
 
 #    path = astar(maze,current_pos,ob)
