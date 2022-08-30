@@ -1,6 +1,8 @@
 import heapq
 import math
 
+from position import RobotPosition
+
 class Node:
 
     def __init__(self, parent = None, position = None):
@@ -99,4 +101,5 @@ def astar(maze,start,end):
 
 
 
-    
+    def mod_AStar(start:RobotPosition,end:RobotPosition,maze):
+        return
