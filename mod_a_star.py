@@ -47,7 +47,18 @@ class Mod_A_Star:
             if after: 
                 neighbors.append((after,dist,c))
 
-        print(neighbors)
+        turnMovement = [
+            #???????????????
+        ]
+        turn_penalty = 2
+        for c in turnMovement:
+            after = self.check_valid_command(c,pos)
+            if after:
+                neighbors.append((after,turn_penalty,c))
+
+
+        #dist and turn penalty are the weights needed to traverse to the after position
+
         return neighbors
 
 grid = Grid()
