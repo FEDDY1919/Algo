@@ -10,7 +10,7 @@ class Position:
 
     def __str__(self):
         if self.isObstacle: return f"X"
-        return f"."
+        return f"{self.r}-{self.c}-{self.direction}"
 
     __repr__ = __str__
 

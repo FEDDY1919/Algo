@@ -2,7 +2,7 @@ import itertools
 import math
 from grid import *
 from constants import *
-from shortest_path import *
+from a_star import *
 from robot import Robot
 
 def calc_distance(path):
@@ -29,7 +29,7 @@ if __name__ == "__main__":
     current_pos = [18,2] #Starting/Current Position
 
 
-    maze = Maze()
+    maze = Grid()
     maze.setObstacles(obstacles)
     maze.draw()
     
@@ -57,6 +57,10 @@ if __name__ == "__main__":
         for item in path:
             print(item)
         robot.pos.r,robot.pos.c = target.rc()
+        robot.pos.direction = target.direction
+
+    
+
 
 
 #    path = astar(maze,current_pos,ob)

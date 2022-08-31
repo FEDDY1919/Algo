@@ -3,7 +3,7 @@ from constants import *
 from position import Position,RobotPosition
 
 
-class Maze:
+class Grid:
     def __init__(self):
         self.grid = self.generate_grid()
   
@@ -28,9 +28,9 @@ class Maze:
         except IndexError:
             return self.grid[r][c].isObstacle
         
-    def posIsValid(self,r,c):
+    def posIsValid(self,pos:Position):
         try:
-            return self.grid[r][c]
+            return self.grid[pos.r][pos.c]
         except IndexError:
             return False
         
